@@ -1,32 +1,20 @@
-# Stage 1: Build stage
-FROM maven:3.9.0-eclipse-temurin-21 AS build
+# Use an official OpenJDK runtime as the base image
+FROM eclipse-temurin:21-jdk-jammy
 
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the pom.xml and other necessary files to download dependencies
-COPY pom.xml .
+# Copy the Maven project files to the container
+COPY pom.xml ./
+COPY src ./src
+COPY service_account_key.json /app/service_account_key.json
+COPY target/api_rest_crud_v1-1.0-SNAPSHOT.jar /app/api_rest_crud_v1-1.0-SNAPSHOT.jar
 
-# Download dependencies (without copying source code yet to leverage cache)
-RUN mvn dependency:go-offline
+# Set the GOOGLE_APPLICATION_CREDENTIALS environment variable for BigQuery authentication
+ENV GOOGLE_APPLICATION_CREDENTIALS=/app/service_account_key.json
 
-# Now copy the rest of the application source code
-COPY src /app/src
-
-# Build the application using Maven (Spring Boot will repackage the app into a JAR file)
-RUN mvn clean package -DskipTests
-
-# Stage 2: Run stage (smaller, production-ready image)
-FROM eclipse-temurin:21-jdk-alpine
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the Spring Boot JAR file from the build stage
-COPY --from=build /app/target/*.jar app.jar
-
-# Expose the port the app will run on (default for Spring Boot is 8080)
+# Expose the port your application runs on
 EXPOSE 8080
 
-# Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+# Set the entry point to run the JAR file
+CMD ["java", "-jar", "app/api_rest_crud_v1-1.0-SNAPSHOT.jar"]
