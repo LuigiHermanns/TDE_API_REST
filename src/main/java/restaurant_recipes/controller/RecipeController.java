@@ -56,8 +56,8 @@ public class RecipeController {
     public ResponseEntity<String> deleteRecipe(@PathVariable Long id) {
         if (recipeRepository.findById(id).isPresent()) {
             recipeRepository.deleteById(id);
-            return new ResponseEntity<>("Receita removido com sucesso!", HttpStatus.OK);
+            return new ResponseEntity<>("Receita removida com sucesso!", HttpStatus.OK);
         }
-        return new ResponseEntity<>("Receita não encontrado", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Receita não encontrada", HttpStatus.NOT_FOUND);
     }
 }

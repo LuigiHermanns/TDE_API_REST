@@ -57,10 +57,10 @@ public class RestaurantController {
         }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRestaurant(@PathVariable Long id) {
+    public ResponseEntity<String> deleteRestaurant(@PathVariable Long id) {
         if (restaurantService.findById(id).isPresent()) {
             restaurantService.deleteById(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return new ResponseEntity<>("Restaurante excluído com sucesso!", HttpStatus.OK);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

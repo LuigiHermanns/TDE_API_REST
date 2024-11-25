@@ -13,8 +13,8 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
             .info(new Info()
-                .title("API TDE RESTAAAAAAAAAAAAAAAAA")
-                .description("DOCUMENTAÇÃO DA API REST DO TDE")
+                .title("API TDE REST - Dev Web em Camadas")
+                .description("API REST para o projeto de TDE da disciplina de Desenvolvimento Web em Camadas - Restaurante:Receita")
                 .version("1.0"))
             .addServersItem(new Server()
                 .url("https://tde-api-rest-luigi-793818627834.us-central1.run.app")
